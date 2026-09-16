@@ -1,73 +1,77 @@
-# EcoGuard - Dağıtık Akustik Algılama ile Ormanları Koruma Simülasyonu
+# EcoGuard — Distributed Acoustic Forest Monitoring Simulation
 
-Bu proje, **Necmettin Erbakan Üniversitesi Bilgisayar Mühendisliği Bölümü - Kablosuz Ağlar Dersi** kapsamında geliştirilmiş, kablosuz sensör ağları (WSN - Wireless Sensor Networks) ve dağıtık akustik algılama (DAS) prensiplerini görselleştiren interaktif bir 2.5D simülasyondur.
+An educational **Python + Pygame** simulation exploring how a wireless sensor network could detect acoustic events and route alerts through a multi-hop mesh network.
 
-* **Öğrenci Adı:** Ömer Faruk Kahraman
-* **Öğrenci Numarası:** 21370031058
+The project was developed for a university wireless networks course. It focuses on **sensor-network behavior, routing, event propagation and network resilience**, not on production-grade field detection.
 
----
+## What the Simulation Does
 
-## 🌟 Proje Özellikleri
+- Places a network of acoustic sensor nodes across a forest map
+- Simulates different event types such as chainsaw, gunshot and vehicle sounds
+- Propagates event waves with different speed/range parameters
+- Routes alerts to a gateway using multi-hop paths
+- Visualizes packet movement across the network
+- Models node battery depletion and route changes when nodes become unavailable
+- Displays network health, hop count, packet totals and event history in a live dashboard
 
-1. **Dağıtık Akustik Algılama (DAS) Simülasyonu:**
-   Orman zeminine yerleştirilmiş **24 adet sensör düğümü**, etrafta oluşan akustik dalgaları (motorlu testere, silah sesi, kaçak araç) algılama menzilleri doğrultusunda gerçek zamanlı olarak izler.
+## System Flow
 
-2. **Dinamik Ses Yayılım Modellemesi:**
-   Haritaya tıklayarak oluşturulan ses olayları, farklı hız ve menzillerde (silah sesi çok hızlı ve geniş, motorlu testere orta, kaçak araç yavaş ve dar menzilli) dairesel dalgalar halinde yayılır.
-
-3. **Çok Sıçramalı (Multi-hop) Yönlendirme ve Mesh Ağ Topolojisi:**
-   Sensörler, merkezi baz istasyonuna (Gateway) doğrudan veya komşuları üzerinden aktarmalı olarak bağlanır. En kısa yol bulma algoritması (BFS tabanlı Routing) ile her sensörün Gateway'e giden en verimli kablosuz rotası otomatik çizilir.
-
-4. **Veri Paketlerinin Görsel İletimi:**
-   Ses tespit edildiğinde sensörler kırmızı renkte alarm verir ve sarı parlayan **veri paketlerini (paket parçacıkları)** kablosuz link hatları üzerinden komşudan komşuya sıçratarak Gateway'e ulaştırır. Gateway paketi aldığında alarm durumu ve tahmini olay konumu haritada işaretlenir.
-
-5. **Dinamik Rota Onarımı (Self-Healing Network):**
-   Veri paketi ileten veya aktif duran düğümlerin bataryası tükenebilir. Bataryası biten düğümler "Ölü (DEAD)" duruma geçer. Sistem, kablosuz şebekenin kopmaması için **rotaları gerçek zamanlı olarak otomatik onarır** (ölen düğümün üzerinden geçen hatlar başka aktif komşulara yönlendirilir).
-
-6. **İnteraktif Dashboard:**
-   Sağ panelde WSN şebeke bağlantı sağlığı (yüzdesel olarak), ortalama hop count derinliği, merkeze ulaşan paket sayısı, batarya durumları ve olay türlerine göre alarm geçmişi canlı olarak gösterilir.
-
----
-
-## 🛠️ Gereksinimler ve Kurulum
-
-Simülasyonu çalıştırmak için sisteminizde **Python 3** ve **Pygame** kütüphanesinin kurulu olması gerekmektedir.
-
-### Pygame Kurulumu:
-Konsol veya terminal üzerinden aşağıdaki komutla gerekli kütüphaneyi kurun:
-```bash
-pip install pygame
+```text
+Acoustic event
+     ↓
+Nearby sensors detect it
+     ↓
+Route selection
+     ↓
+Multi-hop packet forwarding
+     ↓
+Gateway receives alert
+     ↓
+Dashboard updates
 ```
 
----
+## Tech Stack
 
-## 🚀 Simülasyonu Çalıştırma
+- Python 3
+- Pygame
+- Graph / BFS-based routing
+- Wireless sensor network simulation
+- Event-driven visualization
 
-Proje klasörünün içerisindeyken aşağıdaki komutu çalıştırarak simülasyonu başlatabilirsiniz:
+## Run Locally
+
 ```bash
+git clone https://github.com/omrfarukkahraman/ecoguard-dagitik-akustik-algilama-ile-ormanlari-koruma.git
+cd ecoguard-dagitik-akustik-algilama-ile-ormanlari-koruma
+pip install pygame
 python ecoguard_simulation.py
 ```
 
----
+## Controls
 
-## ⌨️ Simülasyon Kontrolleri (Klavye & Fare Kılavuzu)
-
-| Kontrol | Açıklama |
+| Control | Action |
 |---|---|
-| **`[Sol Fare Tık]`** | Tıklanan noktada **Ağaç Kesim Sesi (Chainsaw)** dalgası üretir. (Turuncu dalga). |
-| **`[Sağ Fare Tık]`** | Tıklanan noktada avcı **Silah Sesi (Gunshot)** dalgası üretir. (Kırmızı dalga - en hızlı ve uzak). |
-| **`[Orta Fare Tık / C]`** | Fare imlecinin olduğu yerde **Kaçak Araç Sesi (Vehicle)** dalgası üretir. (Sarı dalga). |
-| **`[SPACE]`** | Simülasyonu duraklatır veya devam ettirir. |
-| **`[R]`** | Tüm ağ yapısını sıfırlar, sensör düğümlerini yeniden dağıtır ve bataryaları %100 yapar. |
-| **`[H]`** | Düğümler arasındaki mavi/yeşil kablosuz haberleşme link yollarını gösterir / gizler. |
-| **`[V]`** | Her sensörün algılama ve haberleşme sınır halkalarını gösterir / gizler. |
+| Left click | Create chainsaw event |
+| Right click | Create gunshot event |
+| Middle click / `C` | Create vehicle event |
+| `SPACE` | Pause / resume |
+| `R` | Reset the network |
+| `H` | Show / hide communication links |
+| `V` | Show / hide sensing ranges |
 
----
+## What I Practiced
 
-## 🎥 Tanıtım ve Demo Videosu
+- Modeling a distributed sensor network
+- Multi-hop routing and path recovery
+- Event propagation and visualization
+- Battery-aware node behavior
+- Real-time simulation dashboards
 
-Simülasyonun çalışmasını gösteren örnek ekran kaydına, proje klasöründeki şu video dosyasından ulaşabilirsiniz:
-* `NEÜ Kablosuz Ağlar - EcoGuard DAS Orman Koruma (21370031058) 2026-06-01 15-29-02.mp4`
+## Scope
 
----
-*Bu proje akademik değerlendirme amacıyla hazırlanmıştır.*
+This is a software simulation created for academic exploration of wireless sensor-network concepts. It is not a deployed forest surveillance system.
+
+## Author
+
+**Ömer Faruk Kahraman**  
+Computer Engineering · 2026
